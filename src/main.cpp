@@ -21,8 +21,8 @@
 String outgoing;  // outgoing message.  传出讯息
 
 byte msgCount     = 0;     // count of outgoing messages.  传出消息的计数
-byte localAddress = 0xFF;  // address of this device.  此设备的地址
-byte destination  = 0xBB;  // destination to send to.  发送目的地
+byte localAddress = 0xBB;  // address of this device. 0xFF
+byte destination  = 0xFF;  // destination to send to. 0xBB
 
 long lastSendTime = 0;     // last send time.  上次发送时间
 int interval      = 1000;  // interval between sends.  发送间隔
