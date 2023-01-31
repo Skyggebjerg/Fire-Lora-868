@@ -14,7 +14,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-#define LORA_DEFAULT_SS_PIN    5
+#define LORA_DEFAULT_SS_PIN    5 // SS (CS), RESET, DIO0 (IRQ) need to be changed if other M5Stack (like Core2) is being used
 #define LORA_DEFAULT_RESET_PIN 26
 #define LORA_DEFAULT_DIO0_PIN  36
 
