@@ -27,55 +27,7 @@ byte destination  = 0xBB;  // destination to send to.  发送目的地
 long lastSendTime = 0;     // last send time.  上次发送时间
 int interval      = 1000;  // interval between sends.  发送间隔
 
-void setup() {
-    M5.begin();
-    M5.Power.begin();
 
-    while (!Serial)
-        ;
-
-    Serial.println("LoRa Duplex B");
-
-    // override the default CS, reset, and IRQ pins (optional).  覆盖默认的
-    // CS、复位和 IRQ 引脚（可选）
-    LoRa.setPins();  // set CS, reset, IRQ pin.  设置 CS、复位、IRQ 引脚
-
-    if (!LoRa.begin(
-            868E6)) {  // initialize ratio at 868 MHz.  868 MHz 时的初始化比率
-        Serial.println("LoRa init failed. Check your connections.");
-        while (true)
-            ;  // if failed, do nothing.  如果失败，什么都不做
-    }
-
-    Serial.println("LoRa init succeeded.");
-}
-
-void loop() {
-    if (millis() - lastSendTime > interval) {
-        String message = "HeLoRa World!";  // send a message.  发送消息
-        sendMessage(message);
-        Serial.println("Sending " + message);
-        M5.Lcd.setTextColor(BLUE);
-        M5.Lcd.println("Sending " + message);
-        lastSendTime = millis();  // timestamp the message.  给消息加时间戳
-        interval     = random(1000) + 500;
-    }
-
-    // parse for a packet, and call onReceive with the result:.
-    // 解析数据包，并使用结果调用 onReceive:
-    onReceive(LoRa.parsePacket());
-
-    if (M5.BtnA.wasPressed()) {
-        M5.Lcd.setCursor(0, 0);
-        M5.Lcd.clear(BLACK);
-    }
-
-    if (M5.BtnB.wasPressed()) {
-        reinit();
-    }
-
-    M5.update();
-}
 
 void reinit() {
     Serial.println("LoRa Duplex Reinitialization");
@@ -150,4 +102,54 @@ void onReceive(int packetSize) {
 
     M5.Lcd.setTextColor(YELLOW);
     M5.Lcd.println("Message: " + incoming);
+}
+
+void setup() {
+    M5.begin();
+    M5.Power.begin();
+
+    while (!Serial)
+        ;
+
+    Serial.println("LoRa Duplex B");
+
+    // override the default CS, reset, and IRQ pins (optional).  覆盖默认的
+    // CS、复位和 IRQ 引脚（可选）
+    LoRa.setPins();  // set CS, reset, IRQ pin.  设置 CS、复位、IRQ 引脚
+
+    if (!LoRa.begin(
+            868E6)) {  // initialize ratio at 868 MHz.  868 MHz 时的初始化比率
+        Serial.println("LoRa init failed. Check your connections.");
+        while (true)
+            ;  // if failed, do nothing.  如果失败，什么都不做
+    }
+
+    Serial.println("LoRa init succeeded.");
+}
+
+void loop() {
+    if (millis() - lastSendTime > interval) {
+        String message = "HeLoRa World!";  // send a message.  发送消息
+        sendMessage(message);
+        Serial.println("Sending " + message);
+        M5.Lcd.setTextColor(BLUE);
+        M5.Lcd.println("Sending " + message);
+        lastSendTime = millis();  // timestamp the message.  给消息加时间戳
+        interval     = random(1000) + 500;
+    }
+
+    // parse for a packet, and call onReceive with the result:.
+    // 解析数据包，并使用结果调用 onReceive:
+    onReceive(LoRa.parsePacket());
+
+    if (M5.BtnA.wasPressed()) {
+        M5.Lcd.setCursor(0, 0);
+        M5.Lcd.clear(BLACK);
+    }
+
+    if (M5.BtnB.wasPressed()) {
+        reinit();
+    }
+
+    M5.update();
 }
